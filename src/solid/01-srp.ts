@@ -7,11 +7,11 @@
 
   class ProductService {
 
-    getProduct( id: number) {
+    getProduct( id: number ) {
         console.log("Producto: ", { id, name: "OLED Tv" });
     }
 
-    saveProduct( product: Product) {
+    saveProduct( product: Product ) {
         console.log("Guardando en base de datos", product);
     }
   }
@@ -28,31 +28,41 @@
   // Usualmente, esto es una clase para controlar la vista que es desplegada al usuario
   // Recuerden que podemos tener muchas vistas que realicen este mismo trabajo.
   class ProductBloc {
-    loadProduct(id: number) {
-      // Realiza un proceso para obtener el producto y retornarlo
-      console.log("Producto: ", { id, name: "OLED Tv" });
+
+    constructor( private productService: ProductService, private mailer: Mailer) {
+      this.productService = productService;
+      this.mailer = mailer;
     }
 
-    saveProduct(product: Product) {
+    loadProduct( id: number ) {
+      // Realiza un proceso para obtener el producto y retornarlo
+       return this.productService.getProduct( id );
+    }
+
+    saveProduct(product: Product ) {
       // Realiza una petición para salvar en base de datos
-      console.log("Guardando en base de datos", product);
+      return this.productService.saveProduct( product );
     }
 
     notifyClients() {
-      console.log("Enviando correo a los clientes");
+      this.mailer.sendEmail( ['demo.test.com'], 'to-clients' )
     }
   }
 
   class CartBloc {
 
     private itemsInCart: Object[] = [];
-    addToCart(productId: number) {
+
+    addToCart( productId: number ) {
       // Agregar al carrito de compras
       console.log("Agregando al carrito ", productId);
     }
   }
 
-  const productBloc = new ProductBloc();
+  const productService = new ProductService();
+  const mailer = new Mailer();
+
+  const productBloc = new ProductBloc( productService, mailer );
   const cartBloc = new CartBloc();
 
   productBloc.loadProduct(10);
@@ -60,3 +70,14 @@
   productBloc.notifyClients();
   cartBloc.addToCart(10);
 })();
+
+
+/*
+? Detectar violaciones a SRP
+* Nombres de clases y modulos demasiados genericos, hace que contenga muchas responabilidades.
+* Cambios en el código afectan frecuenmente la clase o módulo.
+* La clase involucra multiples capas.
+* NUmero elevado de importaciones.
+* Muchos metodos publicos.
+* Excesiva cantidad de lineas de codigo.
+*/
