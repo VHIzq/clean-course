@@ -6,13 +6,10 @@
   type HtmlType = 'input'|'select'|'textarea'|'radio';
 
   class HtmlElement {
-      constructor(
-          public id: string, 
-          public type: HtmlType,
-      ) {
-        this.id = id;
-        this.type = type;
-      } 
+    constructor(public id: string, public type: HtmlType) {
+      this.id = id;
+      this.type = type;
+    }
   }
 
   class InputAttributes {

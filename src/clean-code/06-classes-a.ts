@@ -1,6 +1,6 @@
 ( () => {
 
-  //sin aplicar el principio de responsabilidad unica
+  //*sin aplicar el principio de responsabilidad unica
   type Gender = 'M' | 'F'
 
   class Person {
